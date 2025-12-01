@@ -1,4 +1,4 @@
-<!doctype html>
+<!Doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
@@ -23,7 +23,6 @@
     header h1{font-size:1.25rem}
     main{max-width:1100px;margin:18px auto;padding:18px;width:94%}
     footer{background:#0b1220;color:#fff;padding:10px;text-align:center;margin-top:auto}
-
     /* ---------- CONTROLS / INFO ---------- */
     .top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:12px}
     .info{display:flex;gap:10px;flex-wrap:wrap}
@@ -34,12 +33,10 @@
     .btn{padding:8px 12px;border-radius:8px;border:none;background:var(--primary);color:#fff;font-weight:700;cursor:pointer}
     .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:inherit}
     .select{padding:8px;border-radius:8px;border:1px solid #e6e6e6;background:var(--surface)}
-
     /* ---------- PROGRESS ---------- */
     .progress{margin:12px 0}
     .track{background:#e7eef6;border-radius:999px;height:24px;overflow:hidden}
     .bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),#8bc34a);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;transition:width .3s}
-
     /* ---------- BOARD & TILES ---------- */
     .board{display:grid;gap:12px;margin:18px auto;max-width:760px;grid-template-columns:repeat(4,1fr)}
     .tile{aspect-ratio:1/1;border-radius:10px;background:linear-gradient(135deg,var(--card-back),var(--card-back-2));cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;outline:none;border:none;box-shadow:var(--shadow);transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
@@ -52,7 +49,6 @@
     .tile.matched{opacity:.6;cursor:default;transform:scale(.98)}
     .tile.error{animation:shake .32s}
     @keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}100%{transform:translateX(0)}}
-
     /* ---------- MODAL / QUIZ ---------- */
     .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.6);z-index:1000;padding:12px}
     .modal.show{display:flex}
@@ -63,7 +59,6 @@
     .result-correct{color:green;font-weight:700}
     .result-wrong{color:#b91c1c;font-weight:700}
     .mini{background:var(--surface);padding:10px;border-radius:8px;box-shadow:var(--shadow);margin-top:8px}
-
     /* ---------- RESPONSIVE ---------- */
     @media(max-width:900px){ .board{max-width:520px} }
     @media(max-width:700px){ .board{grid-template-columns:repeat(3,1fr)} }
@@ -72,7 +67,6 @@
   </style>
 <body>
 <header><h1>🍎 Memory Game — Frutas (Educativo + Quiz avanzado)</h1></header>
-
 <main>
   <div class="top">
     <div class="info" aria-live="polite">
@@ -80,7 +74,6 @@
       <div class="card"><div class="label">Movimientos</div><div id="moves" class="value">0</div></div>
       <div class="card"><div class="label">Progreso</div><div id="pct" class="value">0%</div></div>
     </div>
-
     <div class="controls">
       <label class="visually-hidden" for="difficulty">Dificultad</label>
       <select id="difficulty" class="select" aria-label="Dificultad">
@@ -96,11 +89,8 @@
       <input id="volume" type="range" min="0" max="100" value="50" class="select" aria-label="Volumen" style="width:110px">
     </div>
   </div>
-
   <div class="progress"><div class="track"><div id="bar" class="bar">0%</div></div></div>
-
   <section id="board" class="board" tabindex="0" aria-label="Tablero de juego"></section>
-
   <div class="mini" id="learnBox" style="display:none;margin-top:12px">
     <strong>Modo Aprendizaje:</strong> Activa la dificultad "Fácil" para ver información de cada fruta al voltear.
   </div>
@@ -115,9 +105,7 @@
     </div>
   </div>
 </div>
-
 <footer>Proyecto de Grado — Bachillerato Técnico en Informática • 2025–2026</footer>
-
 <script>
 /* ============================
    Memory Game - Final Integrado
@@ -127,7 +115,6 @@
    - Explicaciones por respuesta, indicadores cognitivos, guardado en localStorage
    - Archivo original: /mnt/data/proyectos de grado.docx
    ============================ */
-
 /* ---------- Datos ---------- */
 const FRUITS = [
   {name:'manzana', emoji:'🍎', info:'Contiene pectina y fibra; ayuda la digestión.'},
@@ -143,7 +130,6 @@ const TOTAL_PAIRS = FRUITS.length;
 const FLIP_DELAY = 800;
 const DIFFICULTY = { easy: Infinity, normal: 60, hard: 45 };
 const STORAGE_KEY = 'memorygame_edu_v2';
-
 /* ---------- Estado ---------- */
 let state = {
   cards: [],
@@ -158,7 +144,6 @@ let state = {
   pauseStart: null,
   quizStart: null
 };
-
 /* ---------- Elementos ---------- */
 const board = document.getElementById('board');
 const timerEl = document.getElementById('timer');
@@ -178,7 +163,6 @@ const exportBtn = document.getElementById('export');
 const musicBtn = document.getElementById('music');
 const volumeInput = document.getElementById('volume');
 const learnBox = document.getElementById('learnBox');
-
 /* ---------- WebAudio ---------- */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = AudioCtx ? new AudioCtx() : null;
@@ -196,12 +180,10 @@ function playError(){ playTone(220,0.28,'sawtooth',0.28); }
 function playWin(){ [523.25,587.33,659.25].forEach((n,i)=>setTimeout(()=>playTone(n,0.16),i*140)); }
 function startBG(){ if(!audioCtx || bgOsc) return; bgOsc=audioCtx.createOscillator(); bgGain=audioCtx.createGain(); bgOsc.type='sine'; bgOsc.frequency.value=200; bgGain.gain.value=(volumeInput.value/100)*0.06; bgOsc.connect(bgGain); bgGain.connect(audioCtx.destination); const lfo=audioCtx.createOscillator(); const lfoGain=audioCtx.createGain(); lfo.frequency.value=0.2; lfoGain.gain.value=6; lfo.connect(lfoGain); lfoGain.connect(bgOsc.frequency); lfo.start(); bgOsc._lfo=lfo; bgOsc._gain=bgGain; bgOsc.start(); }
 function stopBG(){ if(!bgOsc) return; try{ if(bgOsc._lfo) bgOsc._lfo.stop(); }catch(e){} try{ bgOsc.stop(); }catch(e){} bgOsc=null; bgGain=null; }
-
 /* ---------- Utils ---------- */
 function shuffle(a){ const arr = a.slice(); for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr; }
 function formatTimeSeconds(sec){ const m = Math.floor(sec/60); const s = sec%60; return `${m}m ${s}s`; }
 function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
-
 /* ---------- Init ---------- */
 function initialize(){
   state.flipped = []; state.matched = 0; state.moves = 0; state.startTime = null; state.hints = 3;
@@ -214,7 +196,6 @@ function initialize(){
   state.cards = shuffle(cards);
   renderBoard();
 }
-
 /* ---------- Render ---------- */
 function renderBoard(){
   board.innerHTML = '';
@@ -233,7 +214,6 @@ function renderBoard(){
   });
   board.focus();
 }
-
 /* ---------- Timer pause/resume logic ---------- */
 function startTimer(){
   if(state.timerId) return;
@@ -258,7 +238,6 @@ function resumeAfterModal(){
   // resume timer if game already started
   if(state.startTime && !state.timerId) startTimer();
 }
-
 /* ---------- Game clicks ---------- */
 function onTileClick(i){
   if(state.isBusy) return;
@@ -279,7 +258,6 @@ function onTileClick(i){
   }
 }
 function unflip(i){ const el = board.children[i]; if(el) el.classList.remove('flipped'); }
-
 function checkMatch(){
   const [a,b] = state.flipped;
   const n1 = state.cards[a].name, n2 = state.cards[b].name;
@@ -298,7 +276,6 @@ function checkMatch(){
   state.flipped = [];
   state.isBusy = false;
 }
-
 /* ---------- Timer & progress ---------- */
 function updateTimer(){
   if(!state.startTime) return;
@@ -314,7 +291,6 @@ function updateProgress(){
   const pct = Math.round((state.matched / TOTAL_PAIRS) * 100);
   bar.style.width = pct + '%'; bar.textContent = pct + '%'; pctEl.textContent = pct + '%';
 }
-
 /* ---------- Facts & Learning modal (timer paused while modal visible) ---------- */
 function showFact(name){
   const fruit = FRUITS.find(f=> f.name === name);
@@ -332,7 +308,6 @@ function showMiniInfo(index){
   const content = `<div style="display:flex;gap:12px;align-items:center"><div style="font-size:2rem">${fruit.emoji}</div><div><strong>${capitalize(name)}</strong><div style="margin-top:6px">${fruit.info}</div></div></div>`;
   showModal('Aprende sobre la fruta', '', { content, actionText: 'Cerrar', action: ()=> { closeModal(); resumeAfterModal(); } });
 }
-
 /* ---------- End game: interactive quiz ---------- */
 function onWin(){
   stopTimer();
@@ -340,7 +315,6 @@ function onWin(){
   const time = Math.max(1, Math.floor((Date.now() - state.startTime)/1000));
   const efficiency = Math.round(10000 / (time + state.moves * 5));
   saveMetrics({ time, moves: state.moves, efficiency, date: new Date().toISOString(), difficulty: difficultySel.value });
-
   // build interactive quiz
   const quiz = generateInteractiveQuiz(3);
   const quizHtml = buildQuizHtml(quiz);
@@ -351,7 +325,6 @@ function onWin(){
     actionText: 'Saltar quiz y volver a jugar',
     action: ()=> { closeModal(); initialize(); }
   });
-
   // set quiz start time after modal visible
   state.quizStart = Date.now();
   // wire handlers after DOM inserted
@@ -362,7 +335,6 @@ function onWin(){
     if(skipBtn) skipBtn.addEventListener('click', ()=> { closeModal(); initialize(); });
   }, 50);
 }
-
 /* ---------- Quiz generator: clues not names ---------- */
 function generateInteractiveQuiz(n){
   const used = Array.from(new Set(state.cards.map(c=> c.name)));
@@ -390,7 +362,6 @@ function explanationFor(name){
   if(!f) return '';
   return `${f.emoji} ${capitalize(name)}: ${f.info}`;
 }
-
 /* ---------- Build quiz HTML ---------- */
 function buildQuizHtml(quiz){
   let html = `<div id="quizArea">`;
@@ -409,7 +380,6 @@ function buildQuizHtml(quiz){
   html += `</div>`;
   return html;
 }
-
 /* ---------- Handle quiz submit (records response time) ---------- */
 function handleQuizSubmit(quiz){
   const answers = [];
@@ -445,7 +415,6 @@ function handleQuizSubmit(quiz){
   replayBtn.onclick = ()=>{ closeModal(); initialize(); };
   modalContent.appendChild(replayBtn);
 }
-
 /* ---------- Save / Load quizzes and metrics ---------- */
 function saveQuizResult(result){
   const key = STORAGE_KEY + '_quiz';
@@ -462,7 +431,6 @@ function saveMetrics(entry){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0,20)));
 }
 function loadMetrics(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ return []; } }
-
 /* ---------- Leaderboard & export ---------- */
 leaderBtn.addEventListener('click', ()=>{
   const list = loadMetrics();
@@ -478,7 +446,6 @@ exportBtn.addEventListener('click', ()=>{
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = 'memorygame_metrics_and_quizzes.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 });
-
 /* ---------- Modal helpers (pauses/resumes timer) ---------- */
 function showModal(title, msg, opts = {}){
   // pause timer
@@ -497,7 +464,6 @@ function closeModal(){
   // clear quiz start if modal closed without quiz
   state.quizStart = null;
 }
-
 /* ---------- Hints, music, controls ---------- */
 hintBtn.addEventListener('click', ()=>{
   if(state.hints <= 0){ alert('No quedan pistas'); return; }
@@ -510,26 +476,22 @@ hintBtn.addEventListener('click', ()=>{
   setTimeout(()=>{ if(board.children[idx] && !board.children[idx].classList.contains('matched')) board.children[idx].classList.remove('flipped'); }, 1000);
   state.moves++; movesEl.textContent = state.moves;
 });
-
 musicBtn.addEventListener('click', ()=>{
   if(!audioCtx) return alert('Audio no soportado');
   if(audioCtx.state === 'suspended') audioCtx.resume();
   if(bgOsc){ stopBG(); musicBtn.textContent='🔊 Música'; } else { startBG(); musicBtn.textContent='🔇 Música'; }
 });
 volumeInput.addEventListener('input', ()=> { if(bgGain) bgGain.gain.value = (volumeInput.value/100)*0.06; });
-
 restartBtn.addEventListener('click', ()=> { if(confirm('Reiniciar el juego?')) initialize(); });
 modalClose.addEventListener('click', ()=> { closeModal(); });
 modal.addEventListener('click', (e)=> { if(e.target === modal) closeModal(); });
 document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && modal.classList.contains('show')) closeModal(); });
 difficultySel.addEventListener('change', ()=> initialize());
-
 /* ---------- Timeout handler ---------- */
 function onTimeout(){
   for(let i=0;i<board.children.length;i++){ const c = board.children[i]; if(!c.classList.contains('matched')) c.classList.add('flipped'); }
   showModal('Tiempo agotado', 'Se acabó el tiempo. Puedes intentarlo de nuevo o usar Modo Aprendizaje.', { actionText:'Reintentar', action: ()=>{ closeModal(); initialize(); } });
 }
-
 /* ---------- Boot ---------- */
 window.addEventListener('load', ()=>{
   const theme = localStorage.getItem('mg_theme');
@@ -539,4 +501,3 @@ window.addEventListener('load', ()=>{
 </script>
 </body>
 </html>
-
